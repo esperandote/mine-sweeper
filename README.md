@@ -1,5 +1,7 @@
 # mine-sweeper
 
+<img src='https://github.com/esperandote/mine-sweeper/blob/master/public/preview.png' />  
+
 ## Project setup
 ```
 npm install
