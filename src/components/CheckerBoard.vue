@@ -38,6 +38,16 @@ export default {
       selectNum:0
     }
   },
+  watch: {
+    selectNum: function(){
+      if(this.selectNum===this.xNum*this.yNum-this.mineNum){
+        this.$Message.success({
+          content: '成功！',
+          duration: 5
+        })
+      }
+    }
+  },
   methods: {
     init(){
       this.squares=[];
@@ -88,19 +98,13 @@ export default {
       })
     },
     select(square,x,y){
-      square.selected=true;
-      this.selectNum++;
-      if(square.mine===true){
-        this.fail();
-      }
-      else{
-        if(this.selectNum===this.xNum*this.yNum-this.mineNum){
-          this.$Message.success({
-            content: '成功！',
-            duration: 5
-          })
+      if(square.selected!=true){
+        square.selected=true;
+        this.selectNum++;
+        if(square.mine===true){
+          this.fail();
         }
-        if(square.number===0){
+        else if(square.number===0){
           this.search(x,y)
         }
       }
