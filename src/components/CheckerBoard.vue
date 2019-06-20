@@ -46,7 +46,8 @@ export default {
       squares:[],
       mineNum:0,
       selectNum:0,
-      success:false
+      success:false,
+      end:false
     }
   },
   watch: {
@@ -58,6 +59,7 @@ export default {
           duration: 5
         });
         this.showAll();
+        this.end=true;
       }
     }
   },
@@ -67,6 +69,7 @@ export default {
       this.mineNum=0;
       this.selectNum=0;
       this.success=false;
+      this.end=false;
       for(let i=0;i<this.yNum;i++){
         this.squares.push([]);
         for(let j=0;j<this.xNum;j++){
@@ -109,19 +112,20 @@ export default {
     },
     fail(){
       this.showAll();
+      this.end=true;
       this.$Message.error({
         content: '失败！',
         duration: 5
       })
     },
     select(square,x,y){
-      if(square.selected!=true){
+      if(square.mine===true&&this.end===false){
+        this.fail();
+      }
+      else if(square.selected!=true){
         square.selected=true;
         this.selectNum++;
-        if(square.mine===true){
-          this.fail();
-        }
-        else if(square.number===0){
+        if(square.number===0){
           this.search(x,y)
         }
       }
