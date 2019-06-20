@@ -69,6 +69,10 @@ export default {
   methods: {
     init(){
       this.$refs.checkerboard.init()
+      this.$Message.info({
+        content: '重置成功！',
+        duration: 3
+      });
     }
   }
 }
