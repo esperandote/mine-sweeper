@@ -5,6 +5,7 @@
     :xNum="xNum"
     :yNum="yNum"
     :posibility="posibility"
+    :flag="flag"
     class="checkerboard"/>
     <div class="controls">
       <div>
@@ -35,6 +36,10 @@
           v-model="posibility">
         </InputNumber>
       </div>
+      <div>
+        插旗模式
+        <i-switch v-model="flag" />
+      </div>
       <Button
         long
         size="large"
@@ -57,7 +62,8 @@ export default {
     return{
       xNum:12,
       yNum:9,
-      posibility:0.15
+      posibility:0.15,
+      flag:false
     }
   },
   methods: {

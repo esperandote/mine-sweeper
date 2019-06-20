@@ -25,6 +25,11 @@
           <img src='../assets/mine-red.svg' />
         </div>
         <div
+          v-else-if="square.flag"
+          class="unselected">
+          <img src='../assets/flag.svg' width="100%" height="100%"/>
+        </div>
+        <div
           v-else
           class="unselected">
         </div>
@@ -39,7 +44,8 @@ export default {
   props: {
     xNum: Number,
     yNum: Number,
-    posibility: Number
+    posibility: Number,
+    flag: Boolean
   },
   data: function(){
     return{
@@ -76,7 +82,8 @@ export default {
           this.squares[this.squares.length-1].push({
             mine: Math.random()>1-this.posibility,
             selected: false,
-            number: 0
+            number: 0,
+            flag: false
           })
         }
       }
@@ -119,14 +126,19 @@ export default {
       })
     },
     select(square,x,y){
-      if(square.mine===true&&this.end===false){
-        this.fail();
+      if(this.flag){
+        square.flag=!square.flag;
       }
-      else if(square.selected!=true){
-        square.selected=true;
-        this.selectNum++;
-        if(square.number===0){
-          this.search(x,y)
+      else{
+        if(square.mine===true&&this.end===false){
+          this.fail();
+        }
+        else if(square.selected!=true){
+          square.selected=true;
+          this.selectNum++;
+          if(square.number===0){
+            this.search(x,y)
+          }
         }
       }
     },
