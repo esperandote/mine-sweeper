@@ -44,13 +44,12 @@ export default {
   props: {
     xNum: Number,
     yNum: Number,
-    posibility: Number,
+    mineNum: Number,
     flag: Boolean
   },
   data: function(){
     return{
       squares:[],
-      mineNum:0,
       selectNum:0,
       success:false,
       end:false
@@ -72,7 +71,6 @@ export default {
   methods: {
     init(){
       this.squares=[];
-      this.mineNum=0;
       this.selectNum=0;
       this.success=false;
       this.end=false;
@@ -80,17 +78,19 @@ export default {
         this.squares.push([]);
         for(let j=0;j<this.xNum;j++){
           this.squares[this.squares.length-1].push({
-            mine: Math.random()>1-this.posibility,
+            mine: false,
             selected: false,
             number: 0,
             flag: false
           })
         }
       }
+      for(let x=0;x<this.mineNum;x++){
+        this.setMine();
+      }
       for(let i=0;i<this.yNum;i++){
         for(let j=0;j<this.xNum;j++){
           if(this.squares[i][j].mine===true){
-            this.mineNum++;
             for(let y=this.confineY(i-1);y<=this.confineY(i+1);y++){
               for(let x=this.confineX(j-1);x<=this.confineX(j+1);x++){
                 this.squares[y][x].number++;
@@ -98,6 +98,16 @@ export default {
             }
           }
         }
+      }
+    },
+    setMine(){
+      let x=Math.floor(Math.random()*this.xNum);
+      let y=Math.floor(Math.random()*this.yNum);
+      if(this.squares[y][x].mine===false){
+        this.squares[y][x].mine=true;
+      }
+      else{
+        this.setMine()
       }
     },
     confineX(x){

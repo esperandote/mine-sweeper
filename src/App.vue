@@ -4,7 +4,7 @@
     ref="checkerboard"
     :xNum="xNum"
     :yNum="yNum"
-    :posibility="posibility"
+    :mineNum="mineNum"
     :flag="flag"
     class="checkerboard"/>
     <div class="controls">
@@ -27,13 +27,12 @@
         </InputNumber>
       </div>
       <div>
-        雷出现的概率
+        雷的总数
         <InputNumber
-          :max="1"
-          :min="0"
-          :step="0.01"
+          :max="parseInt(xNum*yNum/3)"
+          :min="1"
           size="large"
-          v-model="posibility">
+          v-model="mineNum">
         </InputNumber>
       </div>
       <div>
@@ -62,7 +61,7 @@ export default {
     return{
       xNum:12,
       yNum:9,
-      posibility:0.15,
+      mineNum:10,
       flag:false
     }
   },
