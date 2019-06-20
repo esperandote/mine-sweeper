@@ -10,9 +10,19 @@
       class="square"
       @click="select(square,xIndex,yIndex)">
         <div
-          v-if="square.selected"
+          v-if="square.selected&&!square.mine"
           class="selected">
-          {{square.mine?"雷":square.number}}
+          {{square.number}}
+        </div>
+        <div
+          v-else-if="square.selected&&square.mine&&success"
+          class="selected">
+          <img src='../assets/mine-green.svg' />
+        </div>
+        <div
+          v-else-if="square.selected&&square.mine&&!success"
+          class="selected">
+          <img src='../assets/mine-red.svg' />
         </div>
         <div
           v-else
@@ -35,16 +45,19 @@ export default {
     return{
       squares:[],
       mineNum:0,
-      selectNum:0
+      selectNum:0,
+      success:false
     }
   },
   watch: {
     selectNum: function(){
       if(this.selectNum===this.xNum*this.yNum-this.mineNum){
+        this.success=true;
         this.$Message.success({
           content: '成功！',
           duration: 5
-        })
+        });
+        this.showAll();
       }
     }
   },
@@ -53,6 +66,7 @@ export default {
       this.squares=[];
       this.mineNum=0;
       this.selectNum=0;
+      this.success=false;
       for(let i=0;i<this.yNum;i++){
         this.squares.push([]);
         for(let j=0;j<this.xNum;j++){
@@ -86,12 +100,15 @@ export default {
       else if(y===this.yNum){return this.yNum-1}
       else{return y}
     },
-    fail(){
+    showAll(){
       for(let i=0;i<this.yNum;i++){
         for(let j=0;j<this.xNum;j++){
           this.squares[i][j].selected=true;
         }
       }
+    },
+    fail(){
+      this.showAll();
       this.$Message.error({
         content: '失败！',
         duration: 5
