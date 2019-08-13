@@ -37,7 +37,7 @@
       </div>
       <div>
         插旗模式
-        <i-switch v-model="flag" />
+        <i-switch v-model="flag"/>
       </div>
       <Button
         long
@@ -73,6 +73,14 @@ export default {
         duration: 3
       });
     }
+  },
+  created(){
+    const that=this;
+    window.addEventListener('keypress',function(e){
+      if(e.code==='Space'){
+        that.flag=!that.flag;
+      }
+    })
   }
 }
 </script>
