@@ -49,16 +49,18 @@ export default {
   },
   data: function(){
     return{
-      squares:[],
-      selectNum:0,
-      success:false,
-      end:false
+      squares: [],
+      selectNum: 0,
+      success: false,
+      end: false,
+      exclude: [-1, -1]
     }
   },
   watch: {
     selectNum: function(){
       if(this.selectNum===this.xNum*this.yNum-this.mineNum){
-        this.success=true;
+        this.success = true;
+        this.exclude = [-1, -1];
         this.$Message.success({
           content: '成功！',
           duration: 5
@@ -69,7 +71,7 @@ export default {
     }
   },
   methods: {
-    init(){
+    blank(){
       this.squares=[];
       this.selectNum=0;
       this.success=false;
@@ -85,6 +87,8 @@ export default {
           })
         }
       }
+    },
+    setMines(){
       for(let x=0;x<this.mineNum;x++){
         this.setMine();
       }
@@ -103,7 +107,7 @@ export default {
     setMine(){
       let x=Math.floor(Math.random()*this.xNum);
       let y=Math.floor(Math.random()*this.yNum);
-      if(this.squares[y][x].mine===false){
+      if(this.squares[y][x].mine===false && !(x === this.exclude[0] && y === this.exclude[1])){
         this.squares[y][x].mine=true;
       }
       else{
@@ -130,6 +134,7 @@ export default {
     fail(){
       this.showAll();
       this.end=true;
+      this.exclude = [-1, -1];
       this.$Message.error({
         content: '失败！',
         duration: 5
@@ -140,6 +145,10 @@ export default {
         square.flag=!square.flag;
       }
       else{
+        if (this.exclude[0] === -1) {
+          this.exclude = [x,y];
+          this.setMines();
+        }
         if(square.mine===true&&this.end===false){
           this.fail();
         }
@@ -167,36 +176,39 @@ export default {
     }
   },
   created(){
-    this.init();
+    this.blank();
   }
 }
 </script>
 
 <style scoped>
-div.line{
+div.line {
   margin-bottom: 5px;
   height: 50px;
 }
-div.line>div.square{
+div.line>div.square {
   float: left;
   width: 50px;
   height: 50px;
-  margin-right: 10px;
+  margin-right: 5px;
   font-size: 30px;
 }
-div.line>div.square>div.selected{
+div.line>div.square>div {
   width: 50px;
   height: 50px;
+  border-radius: 5px;
+}
+div.line>div.square>div.selected {
   background-color: #eee;
   box-sizing: border-box;
   padding: 5px;
 }
-div.line>div.square>div.unselected{
-  width: 50px;
-  height: 50px;
-  background-color: #ccc;
+div.line>div.square>div.unselected {
+  background-color: #bbb;
+  transition: background-color 0.5s;
 }
-div.line>div.square>div.unselected:hover{
+div.line>div.square>div.unselected:hover {
   background-color: #ddd;
+  box-shadow: 0 0 5px #888;
 }
 </style>
