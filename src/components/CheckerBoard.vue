@@ -50,6 +50,7 @@ export default {
   data: function(){
     return{
       squares: [],
+      // 被选中的格子的总数
       selectNum: 0,
       success: false,
       end: false,
@@ -87,11 +88,14 @@ export default {
           })
         }
       }
+      this.exclude = [-1, -1];
     },
     setMines(){
       for(let x=0;x<this.mineNum;x++){
+        // 放置mineNum个雷
         this.setMine();
       }
+      // 遍历所有雷，将雷四周的number加1，即得到所有点应该显示的数字
       for(let i=0;i<this.yNum;i++){
         for(let j=0;j<this.xNum;j++){
           if(this.squares[i][j].mine===true){
@@ -105,6 +109,7 @@ export default {
       }
     },
     setMine(){
+      // 在棋盘上放置一个雷
       let x=Math.floor(Math.random()*this.xNum);
       let y=Math.floor(Math.random()*this.yNum);
       if(this.squares[y][x].mine===false && !(x === this.exclude[0] && y === this.exclude[1])){
@@ -141,23 +146,25 @@ export default {
       })
     },
     select(square,x,y){
+      if(this.end) return;
       if(this.flag){
         square.flag=!square.flag;
+        return;
       }
-      else{
-        if (this.exclude[0] === -1) {
-          this.exclude = [x,y];
-          this.setMines();
-        }
-        if(square.mine===true&&this.end===false){
-          this.fail();
-        }
-        else if(square.selected!=true){
-          square.selected=true;
-          this.selectNum++;
-          if(square.number===0){
-            this.search(x,y)
-          }
+      if (this.exclude[0] === -1) {
+        // 第一次选择的时候才设置雷，防止开局踩雷
+        this.exclude = [x,y];
+        this.setMines();
+      }
+      if(square.mine===true&&this.end===false){
+        this.fail();
+        return;
+      }
+      if(square.selected!=true){
+        square.selected=true;
+        this.selectNum++;
+        if(square.number===0){
+          this.search(x,y)
         }
       }
     },

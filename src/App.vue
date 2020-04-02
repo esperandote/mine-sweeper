@@ -104,6 +104,10 @@ export default {
   margin-left: 30px;
 }
 .controls>div{
-  margin: 15px 0;
+  margin-bottom: 30px;
+  width: 220px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>
