@@ -1,93 +1,82 @@
 <template>
   <div id="app">
     <CheckerBoard
-    ref="checkerboard"
-    :xNum="xNum"
-    :yNum="yNum"
-    :mineNum="mineNum"
-    :flag="flag"
-    class="checkerboard"/>
+      ref="checkerboard"
+      :xNum="xNum"
+      :yNum="yNum"
+      :mineNum="mineNum"
+      :flag="flag"
+      class="checkerboard"
+    />
     <div class="controls">
       <div>
         水平方向格数
-        <InputNumber
-          :max="16"
-          :min="3"
-          size="large"
-          v-model="xNum">
+        <InputNumber :max="16" :min="3" size="large" v-model="xNum">
         </InputNumber>
       </div>
       <div>
         竖直方向格数
-        <InputNumber
-          :max="12"
-          :min="3"
-          size="large"
-          v-model="yNum">
+        <InputNumber :max="12" :min="3" size="large" v-model="yNum">
         </InputNumber>
       </div>
       <div>
         雷的总数
         <InputNumber
-          :max="parseInt(xNum*yNum/3)"
+          :max="parseInt((xNum * yNum) / 3)"
           :min="1"
           size="large"
-          v-model="mineNum">
+          v-model="mineNum"
+        >
         </InputNumber>
       </div>
       <div>
         插旗模式
-        <i-switch v-model="flag"/>
+        <i-switch v-model="flag" />
       </div>
-      <Button
-        long
-        size="large"
-        @click="init">
-        重置
-      </Button>
+      <Button long size="large" @click="init"> 重置 </Button>
     </div>
   </div>
 </template>
 
 <script>
-import CheckerBoard from './components/CheckerBoard.vue'
+import CheckerBoard from "./components/CheckerBoard.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    CheckerBoard
+    CheckerBoard,
   },
-  data: function(){
-    return{
-      xNum:12,
-      yNum:9,
-      mineNum:10,
-      flag:false
-    }
+  data: function () {
+    return {
+      xNum: 12,
+      yNum: 9,
+      mineNum: 10,
+      flag: false,
+    };
   },
   methods: {
-    init(){
-      this.$refs.checkerboard.blank()
+    init() {
+      this.$refs.checkerboard.blank();
       this.$Message.info({
-        content: '重置成功！',
-        duration: 3
+        content: "重置成功！",
+        duration: 3,
       });
-    }
+    },
   },
-  created(){
-    const that=this;
-    window.addEventListener('keypress',function(e){
-      if(e.code==='Space'){
-        that.flag=!that.flag;
+  created() {
+    const that = this;
+    window.addEventListener("keypress", function (e) {
+      if (e.code === "Space") {
+        that.flag = !that.flag;
       }
-    })
-  }
-}
+    });
+  },
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   font-size: 18px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -96,14 +85,14 @@ export default {
   margin-top: 30px;
   margin-left: 30px;
 }
-.checkerboard{
+.checkerboard {
   float: left;
 }
-.controls{
+.controls {
   float: left;
   margin-left: 30px;
 }
-.controls>div{
+.controls > div {
   margin-bottom: 30px;
   width: 220px;
   display: flex;
