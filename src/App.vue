@@ -66,7 +66,7 @@ export default {
   created() {
     const that = this;
     window.addEventListener("keypress", function (e) {
-      if (e.code === "Space") {
+      if (e.code === "Enter") {
         that.flag = !that.flag;
       }
     });
